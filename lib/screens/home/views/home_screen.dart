@@ -2,32 +2,57 @@
 import 'dart:math';
 
 import 'package:expenses_tracker_app/screens/home/views/main_screen.dart';
+import 'package:expenses_tracker_app/screens/stats/stats.dart';
 import 'package:flutter/material.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  int index = 0;
+  late Color selectedItem = Colors.blue;
+  Color unselectedItem = Colors.grey;
+
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //appBar: AppBar(),
+
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.vertical(
           top: Radius.circular(30)
         ),
         child: BottomNavigationBar(
-          backgroundColor: Colors.white,
+          onTap: (value){
+            setState(() {
+              index = value;
+            });
+           
+          },
+          //selectedItemColor: Colors.red,
+          //backgroundColor: Colors.white,
           showSelectedLabels: false,
           showUnselectedLabels: false,
+          selectedItemColor: Colors.yellow,
           elevation: 3,
-          
+
           items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: Icon(
+                Icons.home,
+                color: index == 0 ? selectedItem : unselectedItem,
+                ),
               label: "Home"
               ),
               BottomNavigationBarItem(
-              icon: Icon(Icons.grain_sharp),
+              icon: Icon(Icons.grain_sharp,
+              color: index == 1 ? selectedItem : unselectedItem,
+              ),
               label: "Stat"
               ),
           ],
@@ -53,7 +78,10 @@ class HomeView extends StatelessWidget {
           ),
           child: Icon(Icons.add)),
         ),
-        body: MainScreen(),
+        body: index == 0
+           ? MainScreen()
+           : StatScreen()
+
     );
   }
 }
